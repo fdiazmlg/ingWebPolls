@@ -9,6 +9,9 @@ La aplicación está compuesta por un backend en Express y la UI renderizada por
 
 Para ejecutar el proyecto:
 `npm install`
+`npm start`
+
+Para ver las encuestas podemos entrar en localhost:3000/polls
 
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
 
