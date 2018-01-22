@@ -37,10 +37,18 @@ router.get('/', function(req,res,next) {
         res.json(polls);
     })
 });
+
+router.get('/total/:id', function(req,res,next) {
+    Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
+        if (err) return console.log(err);
+        res.json(polls.secciones[0].preguntas.length);
+    })
+});
+
 // sacar documento por id 
 router.get('/:id', function(req,res,next) {
     // pasamos el param id encuesta para filtrar y obtener el documento 
-    Poll.find({idEncuesta: req.params.id}, function (err, polls) {
+    Poll.findOne({idEncuesta: req.params.id}, function (err, polls) {
         if (err) return console.log(err);
         res.json(polls);
     })
