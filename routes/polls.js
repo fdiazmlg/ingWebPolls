@@ -38,6 +38,19 @@ router.get('/', function(req,res,next) {
     })
 });
 
+router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
+    Poll.findOne({idEncuesta: req.params.id}, function(err,polls){
+        if (err) return console.log(err);
+        // comprobar que no se excede el maximo de preguntas. 
+        if (req.params.idPregunta > polls.secciones[0].preguntas.length)
+        {
+            res.json({mensaje: "error, se execde el maximo de preguntas del cuestionario"});
+        }
+        res.json(
+            polls.secciones[0].preguntas[req.params.idPregunta - 1]);
+    })
+});
+
 router.get('/total/:id', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
         if (err) return console.log(err);
