@@ -17,6 +17,17 @@ Peticiones de encuestas:
 
 `/polls/total/:id // obtener el total de preguntas de una encuesta`
 
+`'/:id/pregunta/:idPregunta' // obtener la pregunta :idPregunta de la encuesta :id ` Devuelve error en caso de no existir la pregunta. 
+
+Ejemplo:
+
+```json
+{"opciones":["Caucasiano","Arabe","Africano","Asiático","Negro americano"],"tipo":"seleccion","percent_diagnostico":0,"texto":"Raza"}
+```
+
+```json
+{"opciones":[],"tipo":"texto","texto":"Edad","percent_diagnostico":0}```` 
+
 
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
 
