@@ -42,12 +42,22 @@ var pollSchema = mongoose.Schema({
 // crear un modelo a partir del esquema. 
 var Poll = mongoose.model('Poll', pollSchema);
 
+// obtener todos los resultados de las encuestas
 router.get('/resultados', function(req,res,next) {
     PollResult.find(function(err, pollresults) {
         if (err) return console.log(err);
         res.json(pollresults)
     })
 });
+// obtener resultados por tipo de encuesta (e.g: grupo de encuesta con id 1)
+router.get('/resultados/:id', function(req,res,next){
+    PollResult.find({idEncuesta: req.params.id}, function(err, pollresults) {
+        if (err) return console.log(err);
+        res.json(pollresults);
+    })
+});
+
+
 
 // sacar todos los documentos de polls
 router.get('/', function(req,res,next) {
@@ -60,7 +70,7 @@ router.get('/', function(req,res,next) {
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls){
         if (err) return console.log(err);
-        // comprobar que no se excede el maximo de preguntas. 
+        // comprobar que no se excede el maximo de preguntas.
         if (req.params.idPregunta > polls.secciones[0].preguntas.length)
         {
             res.json({mensaje: "error, se execde el maximo de preguntas del cuestionario"});
@@ -69,6 +79,8 @@ router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
             polls.secciones[0].preguntas[req.params.idPregunta - 1]);
     })
 });
+
+
 // añadir preguntas para poder modificar las encuestas.
 router.post('/anadir/:id', function(req,res,next){
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
