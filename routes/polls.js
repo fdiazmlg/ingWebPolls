@@ -50,6 +50,31 @@ router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
             polls.secciones[0].preguntas[req.params.idPregunta - 1]);
     })
 });
+// añadir preguntas para poder modificar las encuestas.
+router.post('/anadir/:id', function(req,res,next){
+    Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
+        if (err) return console.log(err);
+        // comrpboar que sea valido
+        if(typeof req.body.texto == "undefined" || typeof req.body.tipo == "undefined")
+        {
+            res.json({mensaje: "error - no se han especificado los campos tipo o texto"});
+        }
+        else {
+            // comprobar si es campo de texto
+            if (req.body.texto == "texto") {
+                polls.secciones[0].preguntas.push({texto: req.body.texto, tipo: req.body.tipo});
+                polls.save();
+                res.json({mensaje: "pregunta insertada con exito"});
+            }
+            else
+            {
+                polls.secciones[0].preguntas.push({texto: req.body.texto, tipo: req.body.tipo, opciones: req.body.opciones});
+                polls.save();
+                res.json({mensaje: "pregunta insertada con exito"});
+            }
+        }
+        })
+});
 
 router.get('/total/:id', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
