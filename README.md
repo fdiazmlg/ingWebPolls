@@ -28,6 +28,32 @@ Ejemplo:
 ```json
 {"opciones":[],"tipo":"texto","texto":"Edad","percent_diagnostico":0}```` 
 
+Via POST
+
+`polls/anadir/:id // añadir preguntas al cuestionario :id `
+
+Parametros para preguntas de texto:
+
+```json
+{
+  "texto": "Texto de la pregunta",
+  "tipo": "texto",
+}
+```
+Para las preguntas de seleccion múltiple
+
+
+```json
+{
+  "texto": "Texto de la pregunta",
+  "tipo": "texto",
+  "opciones": [
+    "opcion1", "opcion2", "..."
+  ],
+}
+```
+
+Existen dos formatos 
 
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
 
