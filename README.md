@@ -53,7 +53,17 @@ Para las preguntas de seleccion múltiple
 }
 ```
 
-Existen dos formatos 
+Obtener los resultados de todas las encuestas:
+
+`polls/encuestas`
+
+Nos devolverá
+
+```json
+[{"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","id":1}]
+```
+
+
 
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
 
