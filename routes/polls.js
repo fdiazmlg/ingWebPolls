@@ -67,6 +67,20 @@ router.get('/', function(req,res,next) {
     })
 });
 
+// almacenar los resultados de las encuestas
+router.post('/encuestas/anadir', function(req,res,next) {
+    var resultado = new PollResult({
+        idEncuesta: req.body.idEncuesta,
+        respuestas: req.body.respuestas
+    });
+    resultado.save();
+    res.json(
+        {
+            mensaje: "Insertado con exito el resultado de la encuesta"
+        }
+    );
+});
+
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls){
         if (err) return console.log(err);
