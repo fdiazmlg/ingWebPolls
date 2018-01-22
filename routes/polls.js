@@ -12,7 +12,18 @@ db.once('open', function(){
 });
 var router = express.Router();
 
-// creamos los modelos 
+// crear schema de pollresult 
+var pollResultSchema = mongoose.Schema({
+    idEncuesta: Number,
+    respuestas: [{
+        texto: String,
+        respuesta: String
+    }]
+});
+
+// crear modelo de resultados a partir del esquema 
+var PollResult = mongoose.model('PollResult', pollResultSchema);
+// creamos los modelos
 var pollSchema = mongoose.Schema({
     idEncuesta: Number,
     secciones: [{
@@ -27,6 +38,7 @@ var pollSchema = mongoose.Schema({
     }
     ]
 });
+
 // crear un modelo a partir del esquema. 
 var Poll = mongoose.model('Poll', pollSchema);
 
@@ -36,6 +48,10 @@ router.get('/', function(req,res,next) {
         if (err) return console.log(err);
         res.json(polls);
     })
+});
+
+router.post('/resultados', function(req,res,next) {
+
 });
 
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
