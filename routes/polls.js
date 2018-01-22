@@ -42,16 +42,19 @@ var pollSchema = mongoose.Schema({
 // crear un modelo a partir del esquema. 
 var Poll = mongoose.model('Poll', pollSchema);
 
+router.get('/resultados', function(req,res,next) {
+    PollResult.find(function(err, pollresults) {
+        if (err) return console.log(err);
+        res.json(pollresults)
+    })
+});
+
 // sacar todos los documentos de polls
 router.get('/', function(req,res,next) {
     Poll.find(function (err, polls) {
         if (err) return console.log(err);
         res.json(polls);
     })
-});
-
-router.post('/resultados', function(req,res,next) {
-
 });
 
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
