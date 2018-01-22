@@ -13,6 +13,11 @@ Para ejecutar el proyecto:
 
 Para ver las encuestas podemos entrar en localhost:3000/polls
 
+Peticiones de encuestas:
+
+`/polls/total/:id // obtener el total de preguntas de una encuesta`
+
+
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
 
 ```json
