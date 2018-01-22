@@ -63,6 +63,10 @@ Nos devolverá
 [{"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","id":1}]
 ```
 
+Obtener todas las encuestas del grupo o id 1. 
+
+`polls/encuestas/:id`
+
 
 
 Las encuestas se guardan en un formato JSON en una base de datos MongoDB. 
