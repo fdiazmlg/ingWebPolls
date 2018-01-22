@@ -60,12 +60,35 @@ Obtener los resultados de todas las encuestas:
 Nos devolverá
 
 ```json
-[{"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","id":1}]
+[{"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","idEncuesta":1}]
 ```
 
 Obtener todas las encuestas del grupo o id 1. 
 
 `polls/encuestas/:id`
+
+`polls/encuestas/anadir`
+
+Añadir los resultados de los cuestionarios a la coleccion correspondiente.
+
+Formato:
+
+```json
+{
+  "respuestas": [
+    {
+      "texto": "",
+      "respuesta": "",
+    }
+  ],
+  "idEncuesta": 1
+}
+```
+
+```json
+[{"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","idEncuesta":1}]
+```
+
 
 
 
