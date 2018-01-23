@@ -12,11 +12,13 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 // conexion abierta
 db.once('open', function(){
-    console.log('Conexion a mongo abierta');
+    console.log('Conection to MongoDB succesful');
 });
 var router = express.Router();
 
 //// --- Routing
+
+// Poll Controllers -- polls
 // sacar todos los documentos de polls
 router.get('/', function(req,res,next) {
     Poll.find(function (err, polls) {
@@ -25,34 +27,11 @@ router.get('/', function(req,res,next) {
     })
 });
 
-// obtener todos los resultados de las encuestas
-router.get('/resultados', function(req,res,next) {
-    PollResult.find(function(err, pollresults) {
+router.get('/total/:id', function(req,res,next) {
+    Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
         if (err) return console.log(err);
-        res.json(pollresults)
+        res.json(polls.secciones[0].preguntas.length);
     })
-});
-// obtener resultados por tipo de encuesta (e.g: grupo de encuesta con id 1)
-router.get('/resultados/:id', function(req,res,next){
-    PollResult.find({idEncuesta: req.params.id}, function(err, pollresults) {
-        if (err) return console.log(err);
-        res.json(pollresults);
-    })
-});
-
-
-// almacenar los resultados de las encuestas
-router.post('/encuestas/anadir', function(req,res,next) {
-    var resultado = new PollResult({
-        idEncuesta: req.body.idEncuesta,
-        respuestas: req.body.respuestas
-    });
-    resultado.save();
-    res.json(
-        {
-            mensaje: "Insertado con exito el resultado de la encuesta"
-        }
-    );
 });
 
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
@@ -67,7 +46,6 @@ router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
             polls.secciones[0].preguntas[req.params.idPregunta - 1]);
     })
 });
-
 
 // añadir preguntas para poder modificar las encuestas.
 router.post('/anadir/:id', function(req,res,next){
@@ -95,13 +73,6 @@ router.post('/anadir/:id', function(req,res,next){
         })
 });
 
-router.get('/total/:id', function(req,res,next) {
-    Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
-        if (err) return console.log(err);
-        res.json(polls.secciones[0].preguntas.length);
-    })
-});
-
 // sacar documento por id 
 router.get('/:id', function(req,res,next) {
     // pasamos el param id encuesta para filtrar y obtener el documento 
@@ -110,4 +81,36 @@ router.get('/:id', function(req,res,next) {
         res.json(polls);
     })
 });
+
+// PollResult Controller -- pollresults
+// obtener todos los resultados de las encuestas
+router.get('/resultados', function(req,res,next) {
+    PollResult.find(function(err, pollresults) {
+        if (err) return console.log(err);
+        res.json(pollresults)
+    })
+});
+// obtener resultados por tipo de encuesta (e.g: grupo de encuesta con id 1)
+router.get('/resultados/:id', function(req,res,next){
+    PollResult.find({idEncuesta: req.params.id}, function(err, pollresults) {
+        if (err) return console.log(err);
+        res.json(pollresults);
+    })
+});
+
+// Other Controller-- IDK
+// almacenar los resultados de las encuestas
+router.post('/encuestas/anadir', function(req,res,next) {
+    var resultado = new PollResult({
+        idEncuesta: req.body.idEncuesta,
+        respuestas: req.body.respuestas
+    });
+    resultado.save();
+    res.json(
+        {
+            mensaje: "Insertado con exito el resultado de la encuesta"
+        }
+    );
+});
+
 module.exports = router;
