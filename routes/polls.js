@@ -18,8 +18,8 @@ var router = express.Router();
 
 //// --- Routing
 
-// Poll Controllers -- polls
-// sacar todos los documentos de polls
+// -- Poll Controllers -- Collection: polls
+// Get all Polls
 router.get('/', function(req,res,next) {
     Poll.find(function (err, polls) {
         if (err) return console.log(err);
@@ -27,6 +27,16 @@ router.get('/', function(req,res,next) {
     })
 });
 
+// Get Poll with ?idPoll
+router.get('/:id', function(req,res,next) {
+    // pasamos el param id encuesta para filtrar y obtener el documento 
+    Poll.findOne({idEncuesta: req.params.id}, function (err, polls) {
+        if (err) return console.log(err);
+        res.json(polls);
+    })
+});
+
+// Get Questions Number from Poll with ?idPoll
 router.get('/total/:id', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
         if (err) return console.log(err);
@@ -34,6 +44,7 @@ router.get('/total/:id', function(req,res,next) {
     })
 });
 
+// Get Question ?idPreg from Poll with ?idPoll
 router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls){
         if (err) return console.log(err);
@@ -47,7 +58,7 @@ router.get('/:id/pregunta/:idPregunta', function(req,res,next) {
     })
 });
 
-// añadir preguntas para poder modificar las encuestas.
+// Add Question to Poll with ?idPoll
 router.post('/anadir/:id', function(req,res,next){
     Poll.findOne({idEncuesta: req.params.id}, function(err,polls) {
         if (err) return console.log(err);
@@ -73,24 +84,20 @@ router.post('/anadir/:id', function(req,res,next){
         })
 });
 
-// sacar documento por id 
-router.get('/:id', function(req,res,next) {
-    // pasamos el param id encuesta para filtrar y obtener el documento 
-    Poll.findOne({idEncuesta: req.params.id}, function (err, polls) {
-        if (err) return console.log(err);
-        res.json(polls);
-    })
-});
+// Modify Question ?idPreg from Poll with ?idPoll
+/*
+TODO
+*/
 
-// PollResult Controller -- pollresults
-// obtener todos los resultados de las encuestas
+// PollResult Controller -- Collection: pollresults
+// Get all PollResults
 router.get('/resultados', function(req,res,next) {
     PollResult.find(function(err, pollresults) {
         if (err) return console.log(err);
         res.json(pollresults)
     })
 });
-// obtener resultados por tipo de encuesta (e.g: grupo de encuesta con id 1)
+// Get all PollResults for Poll with ?idPoll
 router.get('/resultados/:id', function(req,res,next){
     PollResult.find({idEncuesta: req.params.id}, function(err, pollresults) {
         if (err) return console.log(err);
@@ -98,8 +105,7 @@ router.get('/resultados/:id', function(req,res,next){
     })
 });
 
-// Other Controller-- IDK
-// almacenar los resultados de las encuestas
+// Save a PollResult
 router.post('/encuestas/anadir', function(req,res,next) {
     var resultado = new PollResult({
         idEncuesta: req.body.idEncuesta,
@@ -112,5 +118,9 @@ router.post('/encuestas/anadir', function(req,res,next) {
         }
     );
 });
+
+// Other Controller-- IDK
+
+
 
 module.exports = router;
