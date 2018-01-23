@@ -22,11 +22,11 @@ Peticiones de encuestas:
 Ejemplo:
 
 ```json
-{"opciones":["Caucasiano","Arabe","Africano","Asiático","Negro americano"],"tipo":"seleccion","percent_diagnostico":0,"texto":"Raza"}
+{"valor_opciones": [0.1, 0.1, 0.1, 0.5, 0.1], "opciones":["Caucasiano","Arabe","Africano","Asiático","Negro americano"],"tipo":"seleccion","percent_diagnostico":0,"texto":"Raza"}
 ```
 
 ```json
-{"opciones":[],"tipo":"texto","texto":"Edad","percent_diagnostico":0}```` 
+{"valor_opciones": [], "opciones":[],"tipo":"texto","texto":"Edad","percent_diagnostico":0}```` 
 
 Via POST
 
@@ -50,6 +50,9 @@ Para las preguntas de seleccion múltiple
   "opciones": [
     "opcion1", "opcion2", "..."
   ],
+  "valor_opciones": [
+    0.x, 0.y, ...
+  ]
 }
 ```
 
@@ -112,7 +115,8 @@ Las encuestas se guardan en un formato JSON en una base de datos MongoDB.
           "texto": "Raza",
           "opciones": [
             "Caucasiano", "Arabe", "Africano", "Asiático", "Negro americano"
-            ]
+            ],
+          "valor_opciones": [0.1, 0.1, 0.1, 0.5, 0.1]
         }
         ]
     }

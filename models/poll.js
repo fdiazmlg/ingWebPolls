@@ -10,7 +10,8 @@ var pollSchema = mongoose.Schema({
             tipo: String,
             texto: String,
             percent_diagnostico: Number,
-            opciones: Array
+            opciones: Array,
+            valor_opciones: Array
         }]
     }
     ]
