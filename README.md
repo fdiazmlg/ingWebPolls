@@ -119,3 +119,16 @@ Las encuestas se guardan en un formato JSON en una base de datos MongoDB.
     ]
 }
 ```
+
+
+Poblar database
+
+```
+mongo
+use celiacpoll
+db.polls.insert({   "idEncuesta": 1,   "secciones": [     {       "id": 1,       "preguntas": [         {           "tipo": "texto",           "texto": "Edad",           "percent_diagnostico": 0         },         {           "tipo": "seleccion",           "percent_diagnostico": 0,            "texto": "Raza",           "opciones": [             "Caucasiano", "Arabe", "Africano", "Asiático", "Negro americano"             ]         }         ]     }     ] })
+db.pollresults.insert({"respuestas":[{"texto":"¿Que edad tienes?","respuesta":"30"},{"texto":"¿Raza?","respuesta":"Caucasico"}],"_id":"5a664bcee407337d9b29158b","idEncuesta":1})
+```
+Luego probar
+localhost:3000/polls
+localhost:3000/polls/resultados

@@ -1,8 +1,12 @@
 var express = require('express');
 var mongoose = require('mongoose');
 
+// import models
+var Poll  = require('../models/poll.js');
+var PollResult  = require('../models/pollResult.js');
+
 // setup de mongoose 
-mongoose.connect('mongodb://localhost/pollsapp');
+mongoose.connect('mongodb://localhost/celiacpoll');
 var db = mongoose.connection;
 // error en conexion 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -12,35 +16,14 @@ db.once('open', function(){
 });
 var router = express.Router();
 
-// crear schema de pollresult 
-var pollResultSchema = mongoose.Schema({
-    idEncuesta: Number,
-    respuestas: [{
-        texto: String,
-        respuesta: String
-    }]
+//// --- Routing
+// sacar todos los documentos de polls
+router.get('/', function(req,res,next) {
+    Poll.find(function (err, polls) {
+        if (err) return console.log(err);
+        res.json(polls);
+    })
 });
-
-// crear modelo de resultados a partir del esquema 
-var PollResult = mongoose.model('PollResult', pollResultSchema);
-// creamos los modelos
-var pollSchema = mongoose.Schema({
-    idEncuesta: Number,
-    secciones: [{
-        id: Number,
-        preguntas: [
-        {
-            tipo: String,
-            texto: String,
-            percent_diagnostico: Number,
-            opciones: Array
-        }]
-    }
-    ]
-});
-
-// crear un modelo a partir del esquema. 
-var Poll = mongoose.model('Poll', pollSchema);
 
 // obtener todos los resultados de las encuestas
 router.get('/resultados', function(req,res,next) {
@@ -57,15 +40,6 @@ router.get('/resultados/:id', function(req,res,next){
     })
 });
 
-
-
-// sacar todos los documentos de polls
-router.get('/', function(req,res,next) {
-    Poll.find(function (err, polls) {
-        if (err) return console.log(err);
-        res.json(polls);
-    })
-});
 
 // almacenar los resultados de las encuestas
 router.post('/encuestas/anadir', function(req,res,next) {
