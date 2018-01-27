@@ -1,22 +1,11 @@
 var express = require('express');
-var mongoose = require('mongoose');
 
-// import models
+// Import models
 var Poll  = require('../models/poll.js');
 var PollResult  = require('../models/pollResult.js');
 
-// setup de mongoose 
-mongoose.connect('mongodb://localhost/celiacpoll');
-var db = mongoose.connection;
-// error en conexion 
-db.on('error', console.error.bind(console, 'connection error:'));
-// conexion abierta
-db.once('open', function(){
-    console.log('Conection to MongoDB succesful');
-});
-var router = express.Router();
-
 //// --- Routing
+var router = express.Router();
 
 // -- Poll Controllers -- Collection: polls
 // Get all Polls
@@ -120,7 +109,5 @@ router.post('/encuestas/anadir', function(req,res,next) {
 });
 
 // Other Controller-- IDK
-
-
 
 module.exports = router;

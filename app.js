@@ -4,11 +4,29 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
 
 var index = require('./routes/index');
 var polls = require('./routes/polls');
+var users = require('./routes/users');
+
+var config = require('./config');
 
 var app = express();
+
+/// --- CONFIGURATION
+// Mongoose Setup
+mongoose.connect(config.database);
+var db = mongoose.connection;
+// Connection Error
+db.on('error', console.error.bind(console, 'connection error:'));
+// Connection Open
+db.once('open', function(){
+    console.log('Conection to MongoDB succesful');
+});
+
+// Secret Setup
+app.set('superSecret', config.secret);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +40,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Setup Routing
 app.use('/', index);
 app.use('/polls', polls);
+app.use('/users', users);
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

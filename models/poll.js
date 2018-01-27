@@ -15,6 +15,6 @@ var pollSchema = mongoose.Schema({
         }]
     }
     ]
-});
+}, { collection: 'polls' });
 
 module.exports = mongoose.model('Poll', pollSchema);

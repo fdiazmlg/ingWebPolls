@@ -7,6 +7,6 @@ var pollResultSchema = mongoose.Schema({
         texto: String,
         respuesta: String
     }]
-});
+}, { collection: 'pollresults' });
 
 module.exports = mongoose.model('PollResult', pollResultSchema);
