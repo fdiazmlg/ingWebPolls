@@ -30,23 +30,50 @@ router.post('/auth', function(req, res) {
 			// Password match check
 			if (user.password != req.body.password) {
 			res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-		} else {
-			// Create token
-			const payload = { admin: 'true' };
-			var token = jwt.sign(payload, config.secret, { 
-				expiresIn: 1440 // expires in 24 hours
-			});
+			} else {
+				// Create token
+				const payload = { admin: 'true' };
+				var token = jwt.sign(payload, config.secret, { 
+					expiresIn: 43200 // expires in 12 hours
+				});
 
-			// Return token as json
-			res.json({
-				success: true,
-				message: 'Enjoy your token!',
-				token: token
-			});
-		}
+				// Return token as json
+				res.json({
+					success: true,
+					message: 'Enjoy your token!',
+					token: token
+				});
+			}
 		}
 	});
 });
+
+router.get('/verify_admin', function(req, res, next){
+	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+	// decode token
+	if (token) {
+		// verifies secret and checks exp
+		jwt.verify(token, config.secret, function(err, decoded) {      
+			if (err) {
+				console.log(err);
+				return res.json({ success: false, message: 'Failed to authenticate token.' });
+			} else {
+				// if everything is good, save to request for use in other routes
+				req.decoded = decoded;    
+				res.json({ success: true, message: 'Valid user' });
+				next();
+			}
+		});
+	} else {
+		// Return error if no token
+		return res.status(403).send({ 
+			success: false, 
+			message: 'No token provided.' 
+		});
+	}
+});
+
+
 /*
 // Middleware
 router.use(function(req, res, next) {
@@ -72,14 +99,14 @@ router.use(function(req, res, next) {
 		});
 	}
 });
-
+*/
+// --- TESTING / DEBUG ---
 // Random message
 router.get('/random', function(req,res,next) {
 	console.log('### RANDOM MIDDLEWARE TEST ###')
     res.json({ message: "SUCCESFULL TOKEN" });
 });
 
-// --- TESTING / DEBUG ---
 // TESTING: Setup Test User
 router.get('/setup', function(req,res,next) {
 	// Create a sample user
@@ -102,3 +129,10 @@ module.exports = router;
 
 // https://auth0.com/blog/secure-your-react-and-redux-app-with-jwt-authentication/
 // https://auth0.com/blog/adding-authentication-to-react-native-using-jwt/
+
+/*
+// --- ESTA ES LA IMPORTANTE
+// https://stackoverflow.com/questions/14527360/can-i-set-a-global-header-for-all-ajax-requests
+
+
+*/
